@@ -38,3 +38,4 @@ python -m kaggle_nvida.cli --help
 - implement synthetic reasoning data generators
 - implement filtering, scoring, and stage mixture builders
 - provide experiment tracking templates for LoRA runs
+
