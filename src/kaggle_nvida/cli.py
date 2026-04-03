@@ -7,6 +7,7 @@ import json
 from pathlib import Path
 
 from kaggle_nvida.curation import apply_profile_results, build_stage_selection, curate_manifest
+from kaggle_nvida.exporters import export_training_dataset
 from kaggle_nvida.importers import import_jsonl_dataset
 from kaggle_nvida.pipeline import create_bootstrap_math_pack, create_bootstrap_mixed_pack
 from kaggle_nvida.tracking import init_experiment_run, record_experiment_result
@@ -85,6 +86,19 @@ def build_parser() -> argparse.ArgumentParser:
     import_parser.add_argument("--mapping", type=Path, required=True)
     import_parser.add_argument("--output", type=Path, required=True)
     import_parser.add_argument("--manifest-output", type=Path, required=False)
+
+    export_parser = subparsers.add_parser(
+        "export-training",
+        help="Export selected manifest rows into a training-ready file.",
+    )
+    export_parser.add_argument("--manifest", type=Path, required=True)
+    export_parser.add_argument("--output", type=Path, required=True)
+    export_parser.add_argument(
+        "--format",
+        choices=["chat_jsonl", "prompt_completion", "tagged_text"],
+        default="chat_jsonl",
+    )
+    export_parser.add_argument("--summary", type=Path, required=False)
     return parser
 
 
@@ -165,6 +179,16 @@ def main() -> int:
             manifest_output_path=args.manifest_output,
         )
         print(f"Imported dataset with summary: {summary}")
+        return 0
+
+    if args.command == "export-training":
+        summary = export_training_dataset(
+            manifest_path=args.manifest,
+            output_path=args.output,
+            format_name=args.format,
+            summary_path=args.summary,
+        )
+        print(f"Exported training data with summary: {summary}")
         return 0
 
     parser.error(f"Unknown command: {args.command}")
