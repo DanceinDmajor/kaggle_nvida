@@ -8,7 +8,7 @@ from pathlib import Path
 
 from kaggle_nvida.curation import apply_profile_results, build_stage_selection, curate_manifest
 from kaggle_nvida.importers import import_jsonl_dataset
-from kaggle_nvida.pipeline import create_bootstrap_math_pack
+from kaggle_nvida.pipeline import create_bootstrap_math_pack, create_bootstrap_mixed_pack
 from kaggle_nvida.tracking import init_experiment_run, record_experiment_result
 
 
@@ -28,6 +28,14 @@ def build_parser() -> argparse.ArgumentParser:
     synth_parser.add_argument("--output-dir", type=Path, required=True)
     synth_parser.add_argument("--count", type=int, default=100)
     synth_parser.add_argument("--seed", type=int, default=7)
+
+    mixed_parser = subparsers.add_parser(
+        "bootstrap-mixed",
+        help="Create a broader synthetic starter pack across multiple task families.",
+    )
+    mixed_parser.add_argument("--output-dir", type=Path, required=True)
+    mixed_parser.add_argument("--count-per-family", type=int, default=100)
+    mixed_parser.add_argument("--seed", type=int, default=7)
 
     curate_parser = subparsers.add_parser(
         "curate-jsonl",
@@ -96,6 +104,18 @@ def main() -> int:
         )
         print(
             "Created bootstrap math pack "
+            f"with {summary['dataset_rows']} dataset rows and {summary['manifest_rows']} manifest rows."
+        )
+        return 0
+
+    if args.command == "bootstrap-mixed":
+        summary = create_bootstrap_mixed_pack(
+            output_dir=args.output_dir,
+            count_per_family=args.count_per_family,
+            seed=args.seed,
+        )
+        print(
+            "Created bootstrap mixed pack "
             f"with {summary['dataset_rows']} dataset rows and {summary['manifest_rows']} manifest rows."
         )
         return 0
