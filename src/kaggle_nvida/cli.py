@@ -7,6 +7,7 @@ import json
 from pathlib import Path
 
 from kaggle_nvida.curation import apply_profile_results, build_stage_selection, curate_manifest
+from kaggle_nvida.importers import import_jsonl_dataset
 from kaggle_nvida.pipeline import create_bootstrap_math_pack
 from kaggle_nvida.tracking import init_experiment_run, record_experiment_result
 
@@ -67,6 +68,15 @@ def build_parser() -> argparse.ArgumentParser:
     )
     tracker_parser.add_argument("--tracker", type=Path, required=True)
     tracker_parser.add_argument("--summary-json", type=Path, required=True)
+
+    import_parser = subparsers.add_parser(
+        "import-jsonl",
+        help="Import an external JSONL dataset using a mapping config.",
+    )
+    import_parser.add_argument("--input", type=Path, required=True)
+    import_parser.add_argument("--mapping", type=Path, required=True)
+    import_parser.add_argument("--output", type=Path, required=True)
+    import_parser.add_argument("--manifest-output", type=Path, required=False)
     return parser
 
 
@@ -125,6 +135,16 @@ def main() -> int:
         summary = json.loads(args.summary_json.read_text(encoding='utf-8'))
         record_experiment_result(args.tracker, summary)
         print(f"Recorded experiment summary to {args.tracker}")
+        return 0
+
+    if args.command == "import-jsonl":
+        summary = import_jsonl_dataset(
+            input_path=args.input,
+            mapping_path=args.mapping,
+            output_path=args.output,
+            manifest_output_path=args.manifest_output,
+        )
+        print(f"Imported dataset with summary: {summary}")
         return 0
 
     parser.error(f"Unknown command: {args.command}")

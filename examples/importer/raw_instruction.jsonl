@@ -1,0 +1,3 @@
+{"id": "inst_0001", "prompt": "Return a JSON object with keys city and country for Paris.", "reasoning": "We need a JSON object with the requested keys. Paris is the city and France is the country.", "answer": "{\"city\": \"Paris\", \"country\": \"France\"}"}
+{"id": "inst_0002", "prompt": "List exactly three prime numbers smaller than 10 separated by commas.", "reasoning": "The primes smaller than 10 are 2, 3, 5, and 7. Any three valid ones satisfy the instruction.", "answer": "2, 3, 5"}
+

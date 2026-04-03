@@ -1,0 +1,21 @@
+{
+  "source_name": "example_instruction_set",
+  "task_family": "instruction",
+  "task_subtype": "imported_instruction",
+  "default_split": "train",
+  "default_system_prompt": "You are a careful reasoning assistant.",
+  "user_field": "prompt",
+  "answer_field": "answer",
+  "reasoning_field": "reasoning",
+  "problem_id_field": "id",
+  "source_sample_id_field": "id",
+  "variants": ["full_reasoning", "brief_reasoning", "answer_only"],
+  "stage_target": ["stage1", "stage3"],
+  "source_level": "medium",
+  "generator_model": "imported_dataset",
+  "generator_prompt_id": "instruction_import_v1",
+  "default_verified": false,
+  "default_judge_score": 0.0,
+  "default_quality_band": "unknown"
+}
+
