@@ -7,7 +7,7 @@ name = "kaggle-nvida"
 version = "0.1.0"
 description = "Utilities for the NVIDIA Nemotron reasoning challenge workflow."
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.8"
 authors = [
   { name = "DanceinDmajor" }
 ]
@@ -21,4 +21,3 @@ package-dir = { "" = "src" }
 
 [tool.setuptools.packages.find]
 where = ["src"]
-
