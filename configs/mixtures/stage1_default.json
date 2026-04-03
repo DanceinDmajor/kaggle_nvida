@@ -1,0 +1,20 @@
+{
+  "stage_name": "stage1",
+  "task_family_weights": {
+    "math": 0.28,
+    "science_openqa": 0.20,
+    "instruction": 0.16,
+    "structured": 0.10,
+    "code": 0.12,
+    "retrieval": 0.08,
+    "self_correction": 0.06
+  },
+  "reasoning_style_weights": {
+    "full_reasoning": 0.45,
+    "brief_reasoning": 0.30,
+    "answer_only": 0.15,
+    "candidate_selection": 0.05,
+    "self_correction": 0.05
+  }
+}
+

@@ -1,0 +1,21 @@
+{
+  "base_model": "nemotron-3-nano-30b",
+  "objective": "stage1_sft",
+  "lora": {
+    "rank": 32,
+    "alpha": 64,
+    "dropout": 0.05,
+    "target_modules": "attn_only"
+  },
+  "training": {
+    "learning_rate": 0.0001,
+    "warmup_ratio": 0.03,
+    "weight_decay": 0.0,
+    "scheduler": "cosine",
+    "max_seq_len": 8192,
+    "global_batch_size": 128,
+    "micro_batch_size": 1,
+    "grad_accum": 128
+  }
+}
+

@@ -1,0 +1,17 @@
+{
+  "experiment_id": "exp_stage1_rank32_lr1e4",
+  "objective": "stage1_sft",
+  "data_mix": "stage1_default",
+  "rank": 32,
+  "alpha": 64,
+  "dropout": 0.05,
+  "learning_rate": 0.0001,
+  "target_modules": "attn_only",
+  "best_step": 2800,
+  "math_norm": 0.655,
+  "inst_exact": 0.701,
+  "struct_format": 0.884,
+  "short_reasoning_acc": 0.603,
+  "invalid_output_rate": 0.027,
+  "notes": "strong baseline"
+}

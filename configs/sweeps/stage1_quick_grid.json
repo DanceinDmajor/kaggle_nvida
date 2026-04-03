@@ -1,0 +1,29 @@
+{
+  "experiments": [
+    {
+      "name": "rank16_lr1e4_attn",
+      "rank": 16,
+      "alpha": 32,
+      "dropout": 0.05,
+      "learning_rate": 0.0001,
+      "target_modules": "attn_only"
+    },
+    {
+      "name": "rank32_lr1e4_attn",
+      "rank": 32,
+      "alpha": 64,
+      "dropout": 0.05,
+      "learning_rate": 0.0001,
+      "target_modules": "attn_only"
+    },
+    {
+      "name": "rank64_lr8e5_attn_topmlp",
+      "rank": 64,
+      "alpha": 128,
+      "dropout": 0.05,
+      "learning_rate": 0.00008,
+      "target_modules": "attn+top_mlp"
+    }
+  ]
+}
+
