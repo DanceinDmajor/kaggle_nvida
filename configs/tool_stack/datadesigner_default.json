@@ -1,0 +1,31 @@
+{
+  "tool": "DataDesigner",
+  "recipe": "reasoning_multi_stage",
+  "teacher_model": "teacher_placeholder",
+  "generation_mode": "broad_coverage",
+  "inputs": {
+    "seed_manifest": "",
+    "prompt_library_dir": "metadata/prompt_templates"
+  },
+  "outputs": {
+    "generated_dir": "",
+    "curated_candidate_manifest": ""
+  },
+  "sampling": {
+    "num_generations_per_prompt": 4,
+    "max_tokens": 2048,
+    "temperature": 0.7,
+    "top_p": 0.95
+  },
+  "postprocess": {
+    "reasoning_variants": [
+      "full_reasoning",
+      "brief_reasoning",
+      "answer_only"
+    ],
+    "include_self_correction": true,
+    "include_candidate_selection": true
+  },
+  "task_mix": {}
+}
+

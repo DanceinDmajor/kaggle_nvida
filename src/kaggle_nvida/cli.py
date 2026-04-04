@@ -9,6 +9,7 @@ from pathlib import Path
 from kaggle_nvida.curation import apply_profile_results, build_stage_selection, curate_manifest
 from kaggle_nvida.exporters import export_training_dataset
 from kaggle_nvida.importers import import_jsonl_dataset
+from kaggle_nvida.integrations import materialize_tool_stack_bundle
 from kaggle_nvida.pipeline import create_bootstrap_math_pack, create_bootstrap_mixed_pack
 from kaggle_nvida.tracking import init_experiment_run, record_experiment_result
 
@@ -99,6 +100,19 @@ def build_parser() -> argparse.ArgumentParser:
         default="chat_jsonl",
     )
     export_parser.add_argument("--summary", type=Path, required=False)
+
+    tool_stack_parser = subparsers.add_parser(
+        "materialize-tool-stack",
+        help="Write DataDesigner, Curator, and NeMo RL style configs for a stage bundle.",
+    )
+    tool_stack_parser.add_argument("--stage", choices=["stage1", "stage2", "stage3"], required=True)
+    tool_stack_parser.add_argument("--manifest", type=Path, required=True)
+    tool_stack_parser.add_argument("--train-export", type=Path, required=True)
+    tool_stack_parser.add_argument("--eval-slice-dir", type=Path, required=True)
+    tool_stack_parser.add_argument("--output-dir", type=Path, required=True)
+    tool_stack_parser.add_argument("--datadesigner-config", type=Path, required=False)
+    tool_stack_parser.add_argument("--curator-config", type=Path, required=False)
+    tool_stack_parser.add_argument("--nemo-rl-config", type=Path, required=False)
     return parser
 
 
@@ -189,6 +203,20 @@ def main() -> int:
             summary_path=args.summary,
         )
         print(f"Exported training data with summary: {summary}")
+        return 0
+
+    if args.command == "materialize-tool-stack":
+        summary = materialize_tool_stack_bundle(
+            stage=args.stage,
+            train_manifest_path=args.manifest,
+            export_path=args.train_export,
+            eval_slice_dir=args.eval_slice_dir,
+            output_dir=args.output_dir,
+            datadesigner_config_path=args.datadesigner_config,
+            curator_config_path=args.curator_config,
+            nemo_rl_config_path=args.nemo_rl_config,
+        )
+        print(f"Materialized tool stack bundle: {summary}")
         return 0
 
     parser.error(f"Unknown command: {args.command}")

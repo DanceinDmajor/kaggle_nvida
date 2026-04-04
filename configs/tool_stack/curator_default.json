@@ -1,0 +1,24 @@
+{
+  "tool": "Curator",
+  "inputs": {
+    "manifest": ""
+  },
+  "outputs": {
+    "curated_manifest": "",
+    "report_path": ""
+  },
+  "heuristic_filters": {
+    "min_prompt_tokens": 8,
+    "max_total_tokens": 4096,
+    "reject_repeated_ngrams": true
+  },
+  "dedup": {
+    "exact": true,
+    "semantic": true,
+    "semantic_threshold": 0.92
+  },
+  "quality_threshold": 0.8,
+  "require_verifier_pass": true,
+  "profile_focus": []
+}
+
