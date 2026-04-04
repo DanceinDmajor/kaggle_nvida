@@ -1,0 +1,38 @@
+{
+  "slices": [
+    {
+      "name": "overall_top",
+      "max_examples": 256,
+      "min_judge_score": 0.0
+    },
+    {
+      "name": "math_hard",
+      "max_examples": 128,
+      "task_families": ["math"],
+      "profile_buckets": ["borderline", "hard", "unstable"]
+    },
+    {
+      "name": "retrieval_grounded",
+      "max_examples": 128,
+      "task_families": ["retrieval"],
+      "require_verifier_pass": true
+    },
+    {
+      "name": "structured_strict",
+      "max_examples": 128,
+      "task_families": ["structured"],
+      "answer_formats": ["json"]
+    },
+    {
+      "name": "short_reasoning",
+      "max_examples": 128,
+      "reasoning_styles": ["brief_reasoning", "answer_only"]
+    },
+    {
+      "name": "repair_and_selection",
+      "max_examples": 128,
+      "variant_ids": ["select", "repair"]
+    }
+  ]
+}
+

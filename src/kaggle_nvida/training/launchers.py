@@ -8,6 +8,7 @@ import subprocess
 from pathlib import Path
 from typing import Any
 
+from kaggle_nvida.evaluation import build_eval_slices
 from kaggle_nvida.exporters import export_training_dataset
 from kaggle_nvida.integrations import materialize_tool_stack_bundle
 from kaggle_nvida.io_utils import ensure_parent
@@ -62,6 +63,7 @@ def prepare_stage_run_bundle(
     if eval_slice_dir is None:
         eval_slice_dir = run_dir / "eval_slices"
     eval_slice_dir.mkdir(parents=True, exist_ok=True)
+    eval_slice_index = build_eval_slices(manifest_path=manifest_path, output_dir=eval_slice_dir)
 
     train_export_path = exports_dir / _export_filename(stage, export_format)
     export_summary_path = exports_dir / f"{stage}_export_summary.json"
@@ -102,6 +104,7 @@ def prepare_stage_run_bundle(
         "stage_config_path": str(stage_config_path),
         "train_export_path": str(train_export_path),
         "export_summary_path": str(export_summary_path),
+        "eval_slice_index": eval_slice_index,
         "tool_stack_bundle": tool_stack_summary,
         "launch_command": launch_command,
         "checkpoints_dir": str(checkpoints_dir),

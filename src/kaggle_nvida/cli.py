@@ -7,6 +7,7 @@ import json
 from pathlib import Path
 
 from kaggle_nvida.curation import apply_profile_results, build_stage_selection, curate_manifest
+from kaggle_nvida.evaluation import build_eval_slices, score_prediction_file
 from kaggle_nvida.exporters import export_training_dataset
 from kaggle_nvida.importers import import_jsonl_dataset
 from kaggle_nvida.integrations import materialize_tool_stack_bundle
@@ -129,6 +130,22 @@ def build_parser() -> argparse.ArgumentParser:
         default="chat_jsonl",
     )
     stage_run_parser.add_argument("--eval-slice-dir", type=Path, required=False)
+
+    eval_slice_parser = subparsers.add_parser(
+        "build-eval-slices",
+        help="Build richer eval slice manifests from a selection manifest.",
+    )
+    eval_slice_parser.add_argument("--manifest", type=Path, required=True)
+    eval_slice_parser.add_argument("--output-dir", type=Path, required=True)
+    eval_slice_parser.add_argument("--config", type=Path, required=False)
+
+    score_parser = subparsers.add_parser(
+        "score-predictions",
+        help="Score a prediction file against one eval slice manifest.",
+    )
+    score_parser.add_argument("--slice-manifest", type=Path, required=True)
+    score_parser.add_argument("--predictions", type=Path, required=True)
+    score_parser.add_argument("--output", type=Path, required=False)
     return parser
 
 
@@ -245,6 +262,24 @@ def main() -> int:
             eval_slice_dir=args.eval_slice_dir,
         )
         print(f"Prepared stage run bundle: {summary}")
+        return 0
+
+    if args.command == "build-eval-slices":
+        summary = build_eval_slices(
+            manifest_path=args.manifest,
+            output_dir=args.output_dir,
+            config_path=args.config,
+        )
+        print(f"Built eval slices: {summary}")
+        return 0
+
+    if args.command == "score-predictions":
+        summary = score_prediction_file(
+            slice_manifest_path=args.slice_manifest,
+            predictions_path=args.predictions,
+            output_path=args.output,
+        )
+        print(f"Scored predictions: {summary}")
         return 0
 
     parser.error(f"Unknown command: {args.command}")
