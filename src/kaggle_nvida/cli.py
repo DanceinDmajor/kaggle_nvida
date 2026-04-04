@@ -11,6 +11,7 @@ from kaggle_nvida.exporters import export_training_dataset
 from kaggle_nvida.importers import import_jsonl_dataset
 from kaggle_nvida.integrations import materialize_tool_stack_bundle
 from kaggle_nvida.pipeline import create_bootstrap_math_pack, create_bootstrap_mixed_pack
+from kaggle_nvida.training import prepare_stage_run_bundle
 from kaggle_nvida.tracking import init_experiment_run, record_experiment_result
 
 
@@ -113,6 +114,21 @@ def build_parser() -> argparse.ArgumentParser:
     tool_stack_parser.add_argument("--datadesigner-config", type=Path, required=False)
     tool_stack_parser.add_argument("--curator-config", type=Path, required=False)
     tool_stack_parser.add_argument("--nemo-rl-config", type=Path, required=False)
+
+    stage_run_parser = subparsers.add_parser(
+        "prepare-stage-run",
+        help="Prepare a stage-specific run directory with exports and launch plan.",
+    )
+    stage_run_parser.add_argument("--stage", choices=["stage1", "stage2", "stage3"], required=True)
+    stage_run_parser.add_argument("--manifest", type=Path, required=True)
+    stage_run_parser.add_argument("--run-dir", type=Path, required=True)
+    stage_run_parser.add_argument("--config", type=Path, required=False)
+    stage_run_parser.add_argument(
+        "--export-format",
+        choices=["chat_jsonl", "prompt_completion", "tagged_text"],
+        default="chat_jsonl",
+    )
+    stage_run_parser.add_argument("--eval-slice-dir", type=Path, required=False)
     return parser
 
 
@@ -217,6 +233,18 @@ def main() -> int:
             nemo_rl_config_path=args.nemo_rl_config,
         )
         print(f"Materialized tool stack bundle: {summary}")
+        return 0
+
+    if args.command == "prepare-stage-run":
+        summary = prepare_stage_run_bundle(
+            stage=args.stage,
+            manifest_path=args.manifest,
+            run_dir=args.run_dir,
+            config_path=args.config,
+            export_format=args.export_format,
+            eval_slice_dir=args.eval_slice_dir,
+        )
+        print(f"Prepared stage run bundle: {summary}")
         return 0
 
     parser.error(f"Unknown command: {args.command}")

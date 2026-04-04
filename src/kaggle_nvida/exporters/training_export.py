@@ -19,6 +19,13 @@ def _load_line_cache(dataset_paths: set[str]) -> dict[str, list[str]]:
 
 def _resolve_examples(manifest_path: Path) -> list[dict[str, Any]]:
     manifest_rows = list(read_jsonl(manifest_path))
+    required_fields = {"path", "line_number", "example_id"}
+    if manifest_rows and not required_fields.issubset(manifest_rows[0]):
+        missing = sorted(required_fields.difference(manifest_rows[0]))
+        raise ValueError(
+            "Manifest rows must include dataset pointers for export. "
+            f"Missing fields: {missing}"
+        )
     line_cache = _load_line_cache({row["path"] for row in manifest_rows})
     examples = []
     for record in manifest_rows:
@@ -101,4 +108,3 @@ def export_training_dataset(
         ensure_parent(summary_path)
         summary_path.write_text(json.dumps(summary, indent=2) + "\n", encoding="utf-8")
     return summary
-

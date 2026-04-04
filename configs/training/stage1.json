@@ -1,0 +1,25 @@
+{
+  "stage": "stage1",
+  "objective": "stage1_sft",
+  "data_mix": "stage1_default",
+  "lora": {
+    "rank": 32,
+    "alpha": 64,
+    "dropout": 0.05,
+    "target_modules": "attn_only"
+  },
+  "training": {
+    "learning_rate": 0.0001,
+    "max_seq_len": 8192,
+    "global_batch_size": 128,
+    "warmup_ratio": 0.03
+  },
+  "nemo_rl": {
+    "launcher_module": "nemo_rl.recipes.nemotron",
+    "extra_cli_args": {
+      "stage": "stage1",
+      "mode": "sft"
+    }
+  }
+}
+

@@ -1,0 +1,25 @@
+{
+  "stage": "stage3",
+  "objective": "stage3_calibration",
+  "data_mix": "stage3_calibration",
+  "lora": {
+    "rank": 32,
+    "alpha": 64,
+    "dropout": 0.05,
+    "target_modules": "attn_only"
+  },
+  "training": {
+    "learning_rate": 6e-05,
+    "max_seq_len": 4096,
+    "global_batch_size": 128,
+    "warmup_ratio": 0.02
+  },
+  "nemo_rl": {
+    "launcher_module": "nemo_rl.recipes.nemotron",
+    "extra_cli_args": {
+      "stage": "stage3",
+      "mode": "sft_calibration"
+    }
+  }
+}
+

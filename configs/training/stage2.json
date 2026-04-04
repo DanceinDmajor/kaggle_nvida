@@ -1,0 +1,25 @@
+{
+  "stage": "stage2",
+  "objective": "stage2_hardening",
+  "data_mix": "stage2_hardening",
+  "lora": {
+    "rank": 64,
+    "alpha": 128,
+    "dropout": 0.05,
+    "target_modules": "attn_plus_top_mlp"
+  },
+  "training": {
+    "learning_rate": 8e-05,
+    "max_seq_len": 8192,
+    "global_batch_size": 96,
+    "warmup_ratio": 0.02
+  },
+  "nemo_rl": {
+    "launcher_module": "nemo_rl.recipes.nemotron",
+    "extra_cli_args": {
+      "stage": "stage2",
+      "mode": "sft_hardening"
+    }
+  }
+}
+
